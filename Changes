@@ -1,0 +1,15 @@
+Revision history for Sub::Spec::URI
+
+0.03     2011-08-29
+
+         Rename from Sub::Spec::ByURI -> Sub::Spec::URI.
+
+
+0.02     2011-08-28
+
+         No functional changes. Forgot to remove unneeded modules.
+
+
+0.01     2011-08-28
+
+         First release.
