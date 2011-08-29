@@ -2,13 +2,13 @@ NAME
     Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 VERSION
-    version 0.04
+    version 0.05
 
 SYNOPSIS
      use Sub::Spec::URI;
 
      # refer to local subroutine
-     my $lsub = Sub::Spec::URI->new("pm://Mod::SubMod::func");
+     my $lsub = Sub::Spec::URI->new("pm:Mod::SubMod::func");
 
      # refer to remote subroutine
      my $rsub = Sub::Spec::URI->new("http://HOST/api/MOD/SUBMOD/FUNC");

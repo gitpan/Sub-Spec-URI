@@ -1,7 +1,4 @@
 package Sub::Spec::URI;
-BEGIN {
-  $Sub::Spec::URI::VERSION = '0.04';
-}
 
 use 5.010;
 use strict;
@@ -10,7 +7,7 @@ use warnings;
 use JSON;
 use URI;
 
-# VERSION
+our $VERSION = '0.05'; # VERSION
 
 our %handlers; # key = 'scheme', value = object
 
@@ -28,7 +25,8 @@ sub new {
         or die "Bad syntax in URI scheme, must be alphanums only";
     my $h = $handlers{$scheme} // "Sub::Spec::URI::$scheme";
     my $hp = $h; $hp =~ s!::!/!g; $hp .= ".pm";
-    require $hp;
+    eval { require $hp };
+    die "Can't handle '$scheme' URI scheme: $@" if $@;
     my $self = bless {_uri=>$uri}, $h;
     $self->_check;
     $self;
@@ -60,14 +58,14 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
  use Sub::Spec::URI;
 
  # refer to local subroutine
- my $lsub = Sub::Spec::URI->new("pm://Mod::SubMod::func");
+ my $lsub = Sub::Spec::URI->new("pm:Mod::SubMod::func");
 
  # refer to remote subroutine
  my $rsub = Sub::Spec::URI->new("http://HOST/api/MOD/SUBMOD/FUNC");

@@ -1,5 +1,12 @@
 Revision history for Sub::Spec::URI
 
+0.05     2011-08-29
+
+         - pm scheme: allow "pm://Module/func" as well as "pm:Module/func".
+
+         - Add more tests.
+
+
 0.04     2011-08-29
 
          Add args() method. Add tests.

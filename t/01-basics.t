@@ -31,6 +31,7 @@ sub test_uri {
 
 test_uri name=>'schemeless not acceptable', args=>['foo'], dies=>1;
 test_uri name=>'unknown scheme not acceptable', args=>['foo:bar'], dies=>1;
+test_uri name=>'invalid scheme', args=>['http+x://foo'], dies=>1;
 
 test_uri name=>'pm: invalid syntax 1', args=>['pm:a:b'], dies=>1;
 test_uri name=>'pm: invalid syntax 3', args=>['pm:a-b'], dies=>1;
@@ -46,7 +47,7 @@ test_uri
     };
 test_uri
     name=>'pm: basic tests (module) (2)',
-    args=>['pm:Dies::Foo/'],
+    args=>['pm:/Dies::Foo/'],
     post_test=>sub {
         my ($uri) = @_;
         is($uri->module, "Dies::Foo", "module()");
@@ -55,7 +56,7 @@ test_uri
     };
 test_uri
     name=>'pm: basic tests (module+sub)',
-    args=>['pm:Dies/baz'],
+    args=>['pm://Dies/baz'],
     post_test=>sub {
         my ($uri) = @_;
         is($uri->module, "Dies", "module()");
@@ -85,5 +86,25 @@ test_uri
         is_deeply($res, [200, "OK", {a1=>1, a2=>2}], "call()")
             or diag explain $res;
     };
+
+test_uri
+    name=>'custom scheme handler',
+    args=>['bar:soap'],
+    post_test=>sub {
+        my ($uri) = @_;
+        is($uri->module, "barmod");
+        is($uri->sub, "barsub");
+    };
+
+{
+    local $Sub::Spec::URI::handlers{http} = 'Sub::Spec::URI::bar';
+    test_uri name=>'setting %handlers',
+        args=>['http://foo'],
+            post_test=>sub {
+                my ($uri) = @_;
+                is($uri->module, "barmod");
+                is($uri->sub, "barsub");
+            };
+}
 
 done_testing();

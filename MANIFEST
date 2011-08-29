@@ -12,5 +12,6 @@ t/00-compile.t
 t/01-basics.t
 t/Dies.pm
 t/Foo.pm
+t/Sub/Spec/URI/bar.pm
 t/release-pod-coverage.t
 t/release-pod-syntax.t

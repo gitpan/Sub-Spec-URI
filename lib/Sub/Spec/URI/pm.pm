@@ -1,7 +1,4 @@
 package Sub::Spec::URI::pm;
-BEGIN {
-  $Sub::Spec::URI::pm::VERSION = '0.04';
-}
 
 use 5.010;
 use strict;
@@ -9,11 +6,11 @@ use warnings;
 
 use parent qw(Sub::Spec::URI);
 
-# VERSION
+our $VERSION = '0.05'; # VERSION
 
 sub _check {
     my ($self) = @_;
-    $self->{_uri} =~ m!\Apm:
+    $self->{_uri} =~ m!\Apm:/*
                        (\w+(?:::\w+)*)
                        /?(\w+)?(?:\?|\z)!x
         or die "Invalid pm URI syntax ($self->{_uri}), ".
@@ -91,7 +88,7 @@ Sub::Spec::URI::pm - 'pm' scheme handler for Sub::Spec::URI
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
