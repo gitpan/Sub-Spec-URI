@@ -1,6 +1,6 @@
 package Sub::Spec::URI::pm;
 BEGIN {
-  $Sub::Spec::URI::pm::VERSION = '0.03';
+  $Sub::Spec::URI::pm::VERSION = '0.04';
 }
 
 use 5.010;
@@ -74,7 +74,7 @@ sub call {
     die "Module/sub not specified in URI" unless $module && $sub;
     $self->_require;
     my $subref = \&{"$module\::$sub"};
-    $subref->(%args);
+    $subref->(%{$self->args}, %args);
 }
 
 1;
@@ -91,7 +91,7 @@ Sub::Spec::URI::pm - 'pm' scheme handler for Sub::Spec::URI
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 

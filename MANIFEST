@@ -9,5 +9,8 @@ dist.ini
 lib/Sub/Spec/URI.pm
 lib/Sub/Spec/URI/pm.pm
 t/00-compile.t
+t/01-basics.t
+t/Dies.pm
+t/Foo.pm
 t/release-pod-coverage.t
 t/release-pod-syntax.t

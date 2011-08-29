@@ -1,17 +1,20 @@
 package Sub::Spec::URI;
 BEGIN {
-  $Sub::Spec::URI::VERSION = '0.03';
+  $Sub::Spec::URI::VERSION = '0.04';
 }
 
 use 5.010;
 use strict;
 use warnings;
 
+use JSON;
 use URI;
 
 # VERSION
 
 our %handlers; # key = 'scheme', value = object
+
+my $json = JSON->new->allow_nonref;
 
 sub new {
     my ($class, $str) = @_;
@@ -31,6 +34,19 @@ sub new {
     $self;
 }
 
+sub args {
+    my ($self) = @_;
+    my %form = $self->{_uri}->query_form;
+    for my $k0 (keys %form) {
+        my $k = $k0;
+        if ($k =~ s/:j$//) {
+            eval { $form{$k} = $json->decode($form{$k0}) };
+            delete $form{$k0};
+        }
+    }
+    \%form;
+}
+
 1;
 # ABSTRACT: Refer to module/sub/spec/sub call via URI string
 
@@ -44,7 +60,7 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
