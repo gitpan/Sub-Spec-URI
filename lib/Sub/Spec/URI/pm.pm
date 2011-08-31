@@ -6,7 +6,10 @@ use warnings;
 
 use parent qw(Sub::Spec::URI);
 
-our $VERSION = '0.05'; # VERSION
+use Scalar::Util qw(refaddr);
+use Sub::Spec::Wrapper qw(wrap_sub);
+
+our $VERSION = '0.06'; # VERSION
 
 sub _check {
     my ($self) = @_;
@@ -37,7 +40,8 @@ sub _require {
     require $modulep;
 }
 
-sub _spec {
+sub _specs {
+    # need to _require first
     my ($self) = @_;
     my $module = $self->{_module};
     no strict 'refs';
@@ -46,20 +50,31 @@ sub _spec {
 
 sub spec {
     my ($self) = @_;
-    my $module = $self->{_module};
-    my $sub    = $self->{_sub};
-    die "Module/sub not specified in URI" unless $module && $sub;
-    $self->_require;
-    my $spec = $self->_spec;
-    $spec->{$sub};
+    unless ($self->{_spec}) {
+        my $module = $self->{_module};
+        my $sub    = $self->{_sub};
+        die "Module not specified in URI" unless $module;
+        die "Sub not specified in URI" unless $sub;
+        $self->_require;
+        my $specs = $self->_specs;
+        $self->{_spec} = $specs->{$sub} or die "Sub doesn't have spec";
+    }
+    $self->{_spec};
 }
 
 sub list_subs {
     my ($self) = @_;
     my $module = $self->{_module};
     $self->_require;
-    my $spec = $self->_spec;
-    [sort keys %$spec];
+    my $specs = $self->_specs;
+    my @res;
+    for my $sn (sort keys %$specs) {
+        my $spec = $specs->{$sn};
+        next if $spec->{type}  && $spec->{type}  ne 'sub';
+        next if $spec->{scope} && $spec->{scope} ne 'public';
+        push @res, $sn;
+    }
+    \@res;
 }
 
 # sub list_mods {}
@@ -68,10 +83,21 @@ sub call {
     my ($self, %args) = @_;
     my $module = $self->{_module};
     my $sub    = $self->{_sub};
-    die "Module/sub not specified in URI" unless $module && $sub;
-    $self->_require;
+    my $spec   = $self->spec;
     my $subref = \&{"$module\::$sub"};
-    $subref->(%{$self->args}, %args);
+    my $wrapped = __wrapped_sub($subref, $spec);
+    $wrapped->(%{$self->args}, %args);
+}
+
+my %wrap_cache;
+sub __wrapped_sub {
+    my ($sub, $spec) = @_;
+    my $key = refaddr($sub)."|".refaddr($spec);
+    unless ($wrap_cache{$key}) {
+        my $wrapped = wrap_sub(sub=>$sub, spec=>$spec);
+        $wrap_cache{$key} = $wrapped;
+    }
+    $wrap_cache{$key};
 }
 
 1;
@@ -88,7 +114,7 @@ Sub::Spec::URI::pm - 'pm' scheme handler for Sub::Spec::URI
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 
@@ -105,6 +131,10 @@ version 0.05
 
 This handler lets us refer to local modules/subroutines. Modules will be loaded
 using Perl's require(). Spec will be retrieved from %SPEC package variables.
+
+call() uses L<Sub::Spec::Wrapper> to wrap subroutine to trap exceptions. This
+module assumes that specs don't change, so the resulting wrapped subroutines are
+cached are cached with keys refaddr($sub)|refaddr($spec).
 
 =head1 AUTHOR
 

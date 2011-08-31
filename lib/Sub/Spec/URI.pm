@@ -7,7 +7,7 @@ use warnings;
 use JSON;
 use URI;
 
-our $VERSION = '0.05'; # VERSION
+our $VERSION = '0.06'; # VERSION
 
 our %handlers; # key = 'scheme', value = object
 
@@ -16,8 +16,10 @@ my $json = JSON->new->allow_nonref;
 sub new {
     my ($class, $str) = @_;
 
+    die "Please specify URI string" unless $str;
+
     my $uri = URI->new($str);
-    $uri or die "Can't parse URI";
+    $uri or die "Can't parse URI string";
 
     my $scheme = $uri->scheme;
     $scheme or die "URI must have scheme";
@@ -58,7 +60,7 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 

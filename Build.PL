@@ -17,13 +17,14 @@ my %module_build_args = (
     'Steven Haryanto <stevenharyanto@gmail.com>'
   ],
   'dist_name' => 'Sub-Spec-URI',
-  'dist_version' => '0.05',
+  'dist_version' => '0.06',
   'license' => 'perl',
   'module_name' => 'Sub::Spec::URI',
   'recommends' => {},
   'recursive_test_files' => 1,
   'requires' => {
     'JSON' => '0',
+    'Sub::Spec::Wrapper' => '0',
     'Test::More' => '0.96',
     'URI' => '0',
     'perl' => '5.010000'

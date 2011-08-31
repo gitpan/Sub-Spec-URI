@@ -1,5 +1,12 @@
 Revision history for Sub::Spec::URI
 
+0.06     2011-08-31
+
+         - pm: call() now uses Sub::Spec::Wrapper.
+
+         - pm: list_subs() skips private subs and methods.
+
+
 0.05     2011-08-29
 
          - pm scheme: allow "pm://Module/func" as well as "pm:Module/func".

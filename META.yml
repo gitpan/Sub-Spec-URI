@@ -15,10 +15,11 @@ meta-spec:
 name: Sub-Spec-URI
 requires:
   JSON: 0
+  Sub::Spec::Wrapper: 0
   Test::More: 0.96
   URI: 0
   perl: 5.010000
 resources:
   homepage: http://search.cpan.org/dist/Sub-Spec-URI/
   repository: http://github.com/sharyanto/perl-Sub-Spec-URI
-version: 0.05
+version: 0.06
