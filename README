@@ -2,7 +2,7 @@ NAME
     Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 VERSION
-    version 0.06
+    version 0.07
 
 SYNOPSIS
      use Sub::Spec::URI;
@@ -64,8 +64,9 @@ METHODS
     name.
 
   $s->call(%args) => RESULT
-    Try to call subroutine. URI must specify module and subroutine name.
-    Will die if failure happens.
+    Try to call subroutine. URI must specify module and subroutine name. If
+    URI contains arguments, it will be merged with %args. Will die if
+    failure happens.
 
 SEE ALSO
     Sub::Spec

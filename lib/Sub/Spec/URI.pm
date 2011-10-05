@@ -7,7 +7,7 @@ use warnings;
 use JSON;
 use URI;
 
-our $VERSION = '0.06'; # VERSION
+our $VERSION = '0.07'; # VERSION
 
 our %handlers; # key = 'scheme', value = object
 
@@ -60,7 +60,7 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 
@@ -131,8 +131,8 @@ Try to get spec for subroutine. URI must specify module and subroutine name.
 
 =head2 $s->call(%args) => RESULT
 
-Try to call subroutine. URI must specify module and subroutine name. Will die if
-failure happens.
+Try to call subroutine. URI must specify module and subroutine name. If URI
+contains arguments, it will be merged with %args. Will die if failure happens.
 
 =head1 SEE ALSO
 

@@ -1,5 +1,13 @@
 Revision history for Sub::Spec::URI
 
+0.07     2011-10-05
+
+         [ENHANCEMENTS]
+
+         - pm: instead of throwing an error, spec() will now return all of
+           module's specs if sub is not specified.
+
+
 0.06     2011-08-31
 
          - pm: call() now uses Sub::Spec::Wrapper.

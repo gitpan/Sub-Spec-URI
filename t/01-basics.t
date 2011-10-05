@@ -88,6 +88,17 @@ test_uri
     };
 
 test_uri
+    name=>'pm: spec (without sub)',
+    args=>['pm:Foo'],
+    post_test=>sub {
+        my ($uri) = @_;
+        is_deeply($uri->spec,
+                  {f1 => {summary => 'f1', args => {}},
+                   f2 => {summary => 'f2', args => {}}},
+                  "spec()");
+    };
+
+test_uri
     name=>'custom scheme handler',
     args=>['bar:soap'],
     post_test=>sub {
