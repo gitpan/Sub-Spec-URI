@@ -7,7 +7,7 @@ use warnings;
 use JSON;
 use URI;
 
-our $VERSION = '0.08'; # VERSION
+our $VERSION = '0.09'; # VERSION
 
 our %handlers; # key = 'scheme', value = object
 
@@ -47,6 +47,11 @@ sub args {
     \%form;
 }
 
+sub list_specs {
+    my ($self) = @_;
+    $self->spec_other({sub=>undef});
+}
+
 1;
 # ABSTRACT: Refer to module/sub/spec/sub call via URI string
 
@@ -60,7 +65,7 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

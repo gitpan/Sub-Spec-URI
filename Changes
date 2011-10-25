@@ -1,5 +1,11 @@
 Revision history for Sub-Spec-URI
 
+0.09     2011-10-24
+
+         No functional changes. Internal: move list_specs() to parent class
+         SS::URI so it's available from other subclasses.
+
+
 0.08     2011-10-24
 
          [ENHANCEMENTS]

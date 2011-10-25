@@ -9,7 +9,7 @@ use parent qw(Sub::Spec::URI);
 use Scalar::Util qw(refaddr);
 use Sub::Spec::Wrapper qw(wrap_sub);
 
-our $VERSION = '0.08'; # VERSION
+our $VERSION = '0.09'; # VERSION
 
 sub _check {
     my ($self) = @_;
@@ -146,7 +146,7 @@ Sub::Spec::URI::pm - 'pm' scheme handler for Sub::Spec::URI
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 
