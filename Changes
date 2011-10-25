@@ -1,4 +1,13 @@
-Revision history for Sub::Spec::URI
+Revision history for Sub-Spec-URI
+
+0.08     2011-10-24
+
+         [ENHANCEMENTS]
+
+         - Add call_other() and spec_other().
+
+         - Add list_specs().
+
 
 0.07     2011-10-05
 

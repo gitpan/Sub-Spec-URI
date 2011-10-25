@@ -87,6 +87,30 @@ test_uri
             or diag explain $res;
     };
 
+#
+
+# XXX test spec_other with changing module
+test_uri
+    name=>'pm: spec_other',
+    args=>['pm:Foo/f2?a1=1'],
+    post_test=>sub {
+        my ($uri) = @_;
+        is_deeply($uri->spec_other({sub=>"f1"}),
+                  {summary=>"f1", args=>{}}, "spec_other()")
+            or diag explain $uri->spec;
+    };
+
+# XXX test call_other with changing module
+test_uri
+    name=>'pm: call_other',
+    args=>['pm:Foo/f2?a1=1'],
+    post_test=>sub {
+        my ($uri) = @_;
+        my $res = $uri->call_other({sub=>"f1"}, a2=>2);
+        is_deeply($res, [200, "OK", "foolish"], "call_other()")
+            or diag explain $res;
+    };
+
 test_uri
     name=>'pm: spec (without sub)',
     args=>['pm:Foo'],
@@ -96,6 +120,17 @@ test_uri
                   {f1 => {summary => 'f1', args => {}},
                    f2 => {summary => 'f2', args => {}}},
                   "spec()");
+    };
+
+test_uri
+    name=>'pm: list_specs',
+    args=>['pm:Foo'],
+    post_test=>sub {
+        my ($uri) = @_;
+        is_deeply($uri->list_specs,
+                  {f1 => {summary => 'f1', args => {}},
+                   f2 => {summary => 'f2', args => {}}},
+                  "list_specs()");
     };
 
 test_uri

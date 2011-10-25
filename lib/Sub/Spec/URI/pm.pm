@@ -9,7 +9,7 @@ use parent qw(Sub::Spec::URI);
 use Scalar::Util qw(refaddr);
 use Sub::Spec::Wrapper qw(wrap_sub);
 
-our $VERSION = '0.07'; # VERSION
+our $VERSION = '0.08'; # VERSION
 
 sub _check {
     my ($self) = @_;
@@ -20,6 +20,15 @@ sub _check {
             "use pm:Module::SubMod::func?arg=val";
     $self->{_module} = $1;
     $self->{_sub}    = $2;
+}
+
+sub _other {
+    my ($self, $other, $sub) = @_;
+
+    local $self->{_module} = $other->{module} if exists $other->{module};
+    local $self->{_sub}    = $other->{sub}    if exists $other->{sub};
+    # XXX adjust $self->{_uri} too if someday needed
+    $sub->();
 }
 
 sub module {
@@ -65,6 +74,20 @@ sub spec {
     }
 }
 
+sub spec_other {
+    my ($self, $other, %args) = @_;
+    $self->_other($other, sub { $self->spec() });
+}
+
+sub list_specs {
+    my ($self) = @_;
+    $self->spec_other({sub=>undef});
+}
+
+# not yet implemented
+#sub list_specs_other {
+#}
+
 sub list_subs {
     my ($self) = @_;
     my $module = $self->{_module};
@@ -80,6 +103,7 @@ sub list_subs {
     \@res;
 }
 
+# not available
 # sub list_mods {}
 
 sub call {
@@ -90,6 +114,11 @@ sub call {
     my $subref = \&{"$module\::$sub"};
     my $wrapped = __wrapped_sub($subref, $spec);
     $wrapped->(%{$self->args}, %args);
+}
+
+sub call_other {
+    my ($self, $other, %args) = @_;
+    $self->_other($other, sub { $self->call(%args) });
 }
 
 my %wrap_cache;
@@ -117,7 +146,7 @@ Sub::Spec::URI::pm - 'pm' scheme handler for Sub::Spec::URI
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 

@@ -7,7 +7,7 @@ use warnings;
 use JSON;
 use URI;
 
-our $VERSION = '0.07'; # VERSION
+our $VERSION = '0.08'; # VERSION
 
 our %handlers; # key = 'scheme', value = object
 
@@ -60,7 +60,7 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 
@@ -79,9 +79,14 @@ version 0.07
  # get subroutine's spec
  my $spec = $lsub->spec;
 
+ # get subroutine's spec for another module and/or sub
+ my $spec = $lsub->spec_other({module=>"OtherMod", sub=>"func2"});
+
  # call subroutine
  my $res = $rsub->call(arg1=>'foo', arg2=>'bar');
 
+ # call subroutine with another module and/or sub
+ my $res = $rsub->call_other({module=>"OtherMod", sub=>"func2"}, arg1=>1, ...);
 
  # refer to a module
  my $mod = Sub::Spec::URI->new("http://HOST/api/MOD/");
