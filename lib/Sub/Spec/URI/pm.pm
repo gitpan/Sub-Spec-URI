@@ -9,7 +9,11 @@ use parent qw(Sub::Spec::URI);
 use Scalar::Util qw(refaddr);
 use Sub::Spec::Wrapper qw(wrap_sub);
 
-our $VERSION = '0.09'; # VERSION
+our $VERSION = '0.10'; # VERSION
+
+sub proto {
+    "pm";
+}
 
 sub _check {
     my ($self) = @_;
@@ -46,7 +50,11 @@ sub _require {
     my $module = $self->{_module};
     die "Module not specified in URI" unless $module;
     my $modulep = $module; $modulep =~ s!::!/!g; $modulep .= ".pm";
-    require $modulep;
+    if (require $modulep) {
+        if ($Sub::Spec::URI::load_module_hook) {
+            $Sub::Spec::URI::load_module_hook->($self);
+        }
+    }
 }
 
 sub _specs {
@@ -146,7 +154,7 @@ Sub::Spec::URI::pm - 'pm' scheme handler for Sub::Spec::URI
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 

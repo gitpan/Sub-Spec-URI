@@ -7,9 +7,12 @@ use warnings;
 use JSON;
 use URI;
 
-our $VERSION = '0.09'; # VERSION
+our $VERSION = '0.10'; # VERSION
 
 our %handlers; # key = 'scheme', value = object
+
+# hook will be called with args: $uri object, after module is loaded.
+our $load_module_hook;
 
 my $json = JSON->new->allow_nonref;
 
@@ -65,7 +68,7 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 

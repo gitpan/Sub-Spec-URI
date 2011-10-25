@@ -1,5 +1,14 @@
 Revision history for Sub-Spec-URI
 
+0.10     2011-10-24
+
+         [ENHANCEMENTS]
+
+         - Add $load_module_hook (not yet documented).
+
+         - Add proto().
+
+
 0.09     2011-10-24
 
          No functional changes. Internal: move list_specs() to parent class
