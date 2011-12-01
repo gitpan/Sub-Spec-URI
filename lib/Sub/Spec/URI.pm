@@ -7,7 +7,7 @@ use warnings;
 use JSON;
 use URI;
 
-our $VERSION = '0.10'; # VERSION
+our $VERSION = '0.11'; # VERSION
 
 our %handlers; # key = 'scheme', value = object
 
@@ -68,7 +68,7 @@ Sub::Spec::URI - Refer to module/sub/spec/sub call via URI string
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -120,6 +120,10 @@ subroutines over HTTP.
 Create a new object from URI string. Will die if URI can't be parsed (e.g.
 unknown scheme or bad syntax).
 
+=head2 $s->proto() => STR
+
+Return the protocol/scheme, e.g. "pm", "http", etc.
+
 =head2 $s->module() => STR
 
 Get the module name, or undef if not specified in URI.
@@ -142,10 +146,47 @@ to retrieve, e.g. can't require module (for local modules) or connection failure
 
 Try to get spec for subroutine. URI must specify module and subroutine name.
 
+=head2 $s->spec_other({...}) => HASHREF
+
+Try to get spec for another subroutine, by specifying some other SS request
+key(s). For example, to request spec for another subroutine in the same module:
+
+ my $spec_sub2 = $s->spec_other({sub=>'sub2'});
+
+To request spec for another subroutine in another module:
+
+ my $spec_sub2 = $s->spec_other({sub=>'sub2', module=>'Another::Module'});
+
+spec_other() (and call_other()) are useful for http URI's and the
+L<Sub::Spec::HTTP> specification because there are potentially various ways to
+insert SS request key components into the URL. Some server might use
+http://HOST/api/MODULE::FUNC, some other might use http://HOST/MODULE/FUNC.
+L<Sub::Spec::URI::http> knows how to deal with this, so you can use spec_other()
+to let it do that.
+
+For Sub::Spec::URI::* protocol implementor: If your scheme sees no use for this
+and find this hard to implement, you can die() instead. Otherwise, see the
+source code of Sub::Spec::URI::http to see an example of how this is
+implemented.
+
 =head2 $s->call(%args) => RESULT
 
 Try to call subroutine. URI must specify module and subroutine name. If URI
 contains arguments, it will be merged with %args. Will die if failure happens.
+
+=head2 $s->call_other({...}, %args) => RESULT
+
+Try to call another subroutine. See spec_other() for the concept/reasoning
+behind this.
+
+=head1 PACKAGE VARIABLES
+
+B<$Sub::Spec::URI::load_module_hook> can be set to a subroutine, which will be
+called after module is loaded. The subroutine will be called with $uri, the
+Sub::Spec::URI object. This can be useful e.g. in L<Sub::Spec::HTTP::Server>,
+where the server wants to serve 'spec' or 'usage' command. After the module is
+loaded, the hook will be called which then can be used to (re-)generate the
+documentation from the specs.
 
 =head1 SEE ALSO
 

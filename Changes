@@ -1,5 +1,11 @@
 Revision history for Sub-Spec-URI
 
+0.11     2011-12-01
+
+         No functional changes. Document proto(), spec_other(), call_other(),
+         and $load_module_hook.
+
+
 0.10     2011-10-24
 
          [ENHANCEMENTS]

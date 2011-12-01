@@ -9,7 +9,7 @@ use parent qw(Sub::Spec::URI);
 use Scalar::Util qw(refaddr);
 use Sub::Spec::Wrapper qw(wrap_sub);
 
-our $VERSION = '0.10'; # VERSION
+our $VERSION = '0.11'; # VERSION
 
 sub proto {
     "pm";
@@ -154,7 +154,7 @@ Sub::Spec::URI::pm - 'pm' scheme handler for Sub::Spec::URI
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
